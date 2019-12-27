@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="PATH" value="E:/application/logs"></property>
+    
+    <!-- 将日志输出到控制台  格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+	<appender name="ConsoleLog" class="ch.qos.logback.core.ConsoleAppender">
+  		<encoder>
+    		<pattern>%d{yyyy-MM-ddHH:mm:ss} [%level] [%class:%line] - %m %n</pattern>
+    		<charset>utf-8</charset>
+  		</encoder>
+  		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+         	<level>DEBUG</level>
+      </filter>
+	</appender>
+	
+	<!--根据日志级别分离日志，分别输出到不同的文件 -->
+	<appender name="InfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  		<!--<file>${PATH}/log_info.log</file>-->
+  		 <filter class="ch.qos.logback.classic.filter.LevelFilter">
+   			 <level>ERROR</level>
+			<onMatch>DENY</onMatch>
+			<onMismatch>ACCEPT</onMismatch>
+  		</filter>
+  		<encoder calss = "ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    		<pattern>%d{yyyy-MM-ddHH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+    		<charset>utf-8</charset>
+  		</encoder>
+  		 <!--往后追加 <append>true</append>--> 		
+  		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    		<!-- daily rollover -->
+    		<fileNamePattern>${PATH}/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+    		<!-- keep 30 days' worth of history -->
+    		<maxHistory>30</maxHistory>         
+  		</rollingPolicy> 
+  		<!--日志文件最大的大小-->
+       	<!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+        	<MaxFileSize>100MB</MaxFileSize>
+       	</triggeringPolicy>-->      
+	</appender>
+	<appender name="ErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+   			 <level>ERROR</level>
+  		</filter> 
+  		<encoder calss = "ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+    		<pattern>%d{yyyy-MM-ddHH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+    		<charset>utf-8</charset>
+  		</encoder> 
+  		 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    		<!-- daily rollover -->
+    		<fileNamePattern>${PATH}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+    		<!-- keep 30 days' worth of history -->
+    		<maxHistory>30</maxHistory>         
+  		</rollingPolicy> 
+  		<!--日志文件最大的大小-->
+       	<!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+        	<MaxFileSize>10MB</MaxFileSize>
+       	</triggeringPolicy>-->    
+	</appender>
+	<!-- sql日志 -->
+	<!--  <appender name="SQLLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+         <fileNamePattern>${PATH}/sql-%d{yyyy-MM-dd}.log</fileNamePattern>
+      </rollingPolicy>
+      <append>true</append>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+         <pattern>%d{yyyy-MM-ddHH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+         <charset>utf-8</charset>
+      </encoder>
+   </appender>
+ 	<logger name="szh.hands.mapper" level="DEBUG"> 
+       <appender-ref ref="SQLLog"/> 
+    </logger>-->
+	<!-- 日志输出级别 -->
+	<root level = "info">
+		<appender-ref ref = "ConsoleLog" />
+		<appender-ref ref = "InfoLog" />
+		<appender-ref ref = "ErrorLog" />	
+	</root>  
+</configuration>   

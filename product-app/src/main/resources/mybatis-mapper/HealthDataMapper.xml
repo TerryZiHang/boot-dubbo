@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.szh.mapper.HealthDataMapper" >
+  <resultMap id="BaseResultMap" type="org.szh.beans.HealthData" >
+    <id column="mark_id" property="markId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="height" property="height" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    mark_id, name, weight, height
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_health_data
+    where mark_id = #{markId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_health_data
+    where mark_id = #{markId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.szh.beans.HealthData" >
+    insert into t_health_data (mark_id, name, weight, 
+      height)
+    values (#{markId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, 
+      #{height,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="org.szh.beans.HealthData" >
+    insert into t_health_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="markId != null" >
+        mark_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="markId != null" >
+        #{markId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.szh.beans.HealthData" >
+    update t_health_data
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where mark_id = #{markId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.szh.beans.HealthData" >
+    update t_health_data
+    set name = #{name,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=DECIMAL},
+      height = #{height,jdbcType=DECIMAL}
+    where mark_id = #{markId,jdbcType=VARCHAR}
+  </update>
+</mapper>
