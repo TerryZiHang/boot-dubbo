@@ -24,7 +24,7 @@
 		<version>1.4.1.RELEASE</version>
   </parent>
   <modules>
-  	<module>productor-app</module>
+  	<module>product-app</module>
   	<module>consumer-app</module>
   	<module>common-api</module>
   </modules>
